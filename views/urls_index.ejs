@@ -1,0 +1,21 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>TTinyApp</title>
+</head>
+
+<body>
+
+  <p> <%= urls %> </p>
+  <p> <% for (item in urls) { %>
+      <li> <%= item %>:  <%= urls[item] %> </li>
+      <li> <a href="<%= urls[item] %>"><%=item%></a></li>
+      <% } %>
+  </p>
+
+</body>
+
+</html>
