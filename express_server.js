@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static('public'));
 
 var urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -14,7 +15,8 @@ var urlDatabase = {
 }
 
 app.get("/", (req, res) => {
-  res.end("Hello");
+  //res.end("Hello");
+  res.render("urls_home");
 });
 
 app.get("/urls.json", (req, res) => {
@@ -28,14 +30,6 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  // console.log(req.query);
-  // let tempMsg = {};
-  // for (item in req.query) {
-  //   tempMsg += ` ${req.query[item]}`;
-  // }
-  // let msgObj = {success: ''};
-  // if (req.query.success === 'true') msgObj.success = req.query;
-  // else res.render("urls_new");
   res.render("urls_new");
 
 });
@@ -51,10 +45,13 @@ app.get("/test", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  var rndmStr;
   //res.send("Ok");         // Respond with 'Ok' (we will replace this)
-  rndmStr = randomString(6);
-  urlDatabase[rndmStr] = `http://${req.body.longURL}`;
+  let rndmStr = randomString(6);
+  let tempUrl = req.body.longURL;
+  if (!tempUrl.includes("http://",0) && !tempUrl.includes("https://")) {
+    tempUrl = `http://${tempUrl}`;
+  }
+  urlDatabase[rndmStr] = tempUrl;
   res.redirect("/urls/new?success=true");
 });
 
@@ -63,7 +60,6 @@ app.get("/u/:shortURL", (req, res) => {
     let longURL = urlDatabase[req.params.shortURL];
     res.redirect(longURL);
   }
-
   else res.redirect('/urls');
 });
 
@@ -75,6 +71,13 @@ app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
 
+function randomString(length) {
+  const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  var result = '';
+  for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+  return result;
+}
+
 // function generateRandomString() {
 //   //rndmStr = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
 //   var length = 6;
@@ -83,10 +86,3 @@ app.listen(PORT, () => {
 //   console.log(rndmStr);
 //   return rndmStr;
 // }
-
-function randomString(length) {
-  const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  var result = '';
-  for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-  return result;
-}

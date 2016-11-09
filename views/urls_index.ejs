@@ -11,10 +11,19 @@
   <% include partials/_header %>
   <p> <% for (item in urls) { %>
       <li> <%= item %>:  <%= urls[item] %> </li>
-      <li> <a href="<%= urls[item] %>"><%=item%></a></li>
+      <li> <a href="<%= urls[item] %>" target="_blank"><%=item%></a></li>
       <% } %>
   </p>
+
+  <form action="/urls/new" method="GET" style="margin:40px;">
+      <input type="submit" value="new URL">
+  </form>
+
+  <form action="/" method="GET" style="margin:40px;">
+    <input type="submit" value="home page">
+  </form>
 
 </body>
 
 </html>
+
