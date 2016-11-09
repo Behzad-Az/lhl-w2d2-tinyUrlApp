@@ -8,8 +8,7 @@
 </head>
 
 <body>
-
-  <p> <%= urls %> </p>
+  <% include partials/_header %>
   <p> <% for (item in urls) { %>
       <li> <%= item %>:  <%= urls[item] %> </li>
       <li> <a href="<%= urls[item] %>"><%=item%></a></li>
